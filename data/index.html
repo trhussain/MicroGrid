@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ESP IoT Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <div class="topnav">
+      <h1>Sensor Reading Data</h1>
+    </div> 
+    <div class="content">
+      <div class="card-grid">
+        <div class="card">
+          <p class="card-title"><i style="color:#059e8a;"></i> Vbatt: </p>
+          <p class="reading"><span id="vbatt">N/A</span> V</p>
+        </div>
+        <div class="card">
+          <p class="card-title">Solar Batt</p>
+          <p class="reading"><span id="solarbatt">N/A</span> V</p>
+        </div>
+        <div class="card">
+          <p class="card-title">Solar Current</p>
+          <p class="reading"><span id="solarcurrent">N/A</span> A</p>
+        </div>
+      </div>
+    </div>
+    <div class="control-buttons">
+      <p>GPIO Control:</p>
+      <button id="gpio26" class="button">GPIO 26 OFF</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
