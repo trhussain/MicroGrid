@@ -8,89 +8,56 @@ Utility functions for OLED 128x64 module
 
 
 void displaySetup() {
-  Wire.begin(SDA, SCL);
+  Wire.begin(OLED_SDA, OLED_SCL);
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println("OLED init failed");
     while (true)
       ;  // Halt
   }
-  display.clearDisplay();
-  display.setTextColor(SSD1306_WHITE);
-  display.setTextSize(1);  // Default size
-  display.setCursor(0, 0);
+      display.setTextSize(1);
+  display.setTextColor(WHITE);
+  // Show initial display buffer contents on the screen --
+  // the library initializes this with an Adafruit splash screen.
   display.display();
-}
+  Serial.println("Splash screen here");
 
-
-
-
-
-void playBouncingEarsAnimation() {
-
-  int earX = 10;   // Initial X position
-  int earY = 10;   // Initial Y position
-  int xSpeed = 2;  // Speed in X direction
-  int ySpeed = 2;  // Speed in Y direction
-
+  delay(2000); // Pause for 2 seconds
   display.clearDisplay();
 
-  // Draw ears (two circles)
-  display.fillCircle(earX, earY, 8, SSD1306_WHITE);       // Left Ear
-  display.fillCircle(earX + 20, earY, 8, SSD1306_WHITE);  // Right Ear
-
-  // Draw face
-  display.fillCircle(earX + 10, earY + 15, 10, SSD1306_WHITE);
-
-  // Bouncing logic
-  earX += xSpeed;
-  earY += ySpeed;
-
-  if (earX <= 0 || earX + 20 >= SCREEN_WIDTH) xSpeed = -xSpeed;
-  if (earY <= 0 || earY + 15 >= SCREEN_HEIGHT) ySpeed = -ySpeed;
-
-  display.display();
-  delay(50);
 }
-
-
-
-
-void oledPrintCentered(String text, int y = 0, int size = 1) {
-  display.clearDisplay();
-  display.setTextSize(size);
-  int16_t x1, y1;
-  uint16_t w, h;
-  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
-  int x = (SCREEN_WIDTH - w) / 2;
-  display.setCursor(x, y);
-  display.println(text);
-  display.display();
-}
-void oledPrintMultiline(String line1, String line2, int size = 1) {
-  display.clearDisplay();
-  display.setTextSize(size);
-  display.setCursor(0, 0);
-  display.println(line1);
-  display.println(line2);
-  display.display();
-}
-void testdrawrect(void) {
-  display.clearDisplay();
-
-  for (int16_t i = 0; i < display.height() / 2; i += 2) {
-    display.drawRect(i, i, display.width() - 2 * i, display.height() - 2 * i, SSD1306_WHITE);
-    display.display();  // Update screen with each newly-drawn rectangle
-    delay(1);
-  }
-
-  delay(2000);
-}
-
 
 void infoPage()  {
   display.clearDisplay();
-  display.setTextSize(1);
   display.setCursor(0, 0);
-  display.println("Hello! Write down or save the following information");
+  display.println("Hello! Save the");
+  display.println("following info:");
+
+  display.print("Wifi Name: ");
+  display.println(ssid);
+  display.print("PWD: ");
+  display.println(password);
+  IPAddress IP = WiFi.softAPIP(); // Get the IP address of the AP
+  display.print("IP: ");
+  display.println(IP);
+  // 7 spaces
+  display.print("  --No Connections--");
+  display.display();
+  // Draw dino at the bottom
+  display.drawBitmap(dinoX, 52, epd_bitmap_download, 8, 12, WHITE); // x, y, bitmap, width, height, color
+  display.display();
+
+  // Animate: Move dino
+  if (millis() - lastFrame > 10) {
+    dinoX += dinoSpeed;
+    if (dinoX > 120) dinoX = -8; // Loop around
+    lastFrame = millis();
+  }
+}
+
+
+void dataPage()  {
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.print("--Connected!--");
   display.display();
 }

@@ -25,8 +25,8 @@ Contains pinouts & all system configurations
 
 
 // Define the SDA and SCL pins manually
-#define OLED_SDA 22
-#define OLED_SCL 23 // Update accordingly with your pinout 
+#define OLED_SDA 18
+#define OLED_SCL 5 // Update accordingly with your pinout 
 
 
 // Other 
@@ -35,13 +35,17 @@ Contains pinouts & all system configurations
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define SCREEN_ADDRESS 0x3C  // Check your OLED's address if different
-#define OLED_RESET    -1
+#define OLED_RESET    -1                   
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // Soft Access Point credentials
-const char* ssid = "jeffsboard";
-const char* password = "REPLACE WITH YOUR BIRTHDAY";
+const char* ssid = "net_1";
+const char* password = "my_pwd_1";
+// change 3rd argument (4 initially) for different device ID's 
+// IPAddress local_IP(192, 168, 4, 1);     // AP IP address
+// IPAddress gateway(192, 168, 4, 1);      // Usually same as AP IP
+// IPAddress subnet(255, 255, 255, 0);     // Subnet mask
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -63,6 +67,18 @@ struct sensorData {
   float vSolar;
   float aSolar;
 } mySensorData;
+
+
+// 'download', 20x20px
+const unsigned char epd_bitmap_download [] PROGMEM = {
+	0xff, 0xff, 0xf0, 0xff, 0xf1, 0xf0, 0xff, 0xe0, 0xf0, 0xff, 0xf8, 0x70, 0xff, 0xde, 0x70, 0x8f, 
+	0x8e, 0x70, 0x86, 0x0f, 0x70, 0x80, 0x0e, 0x70, 0x8c, 0x1c, 0x70, 0xc8, 0x00, 0xf0, 0xac, 0x00, 
+	0x70, 0x9e, 0x00, 0x70, 0x80, 0x00, 0x70, 0x80, 0x04, 0x70, 0xe0, 0x0f, 0xf0, 0xf8, 0x43, 0x70, 
+	0xf8, 0x59, 0x70, 0xfc, 0xdb, 0x70, 0xf8, 0xb0, 0xf0, 0xff, 0xff, 0xf0
+};
+int dinoX = 0;
+int dinoSpeed = 5;  // pixels per frame
+unsigned long lastFrame = 0;
 
 #endif  // CONFIG_H
 

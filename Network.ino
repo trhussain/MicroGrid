@@ -78,7 +78,7 @@ void initWebSocket() {
 
 // Initialize WiFi as a Soft Access Point
 void initWiFi() {
-  WiFi.softAP(ssid); // No password
+  WiFi.softAP(ssid, password); // With password
   IPAddress IP = WiFi.softAPIP(); // Get the IP address of the AP
   Serial.print("Access Point IP address: ");
   Serial.println(IP);
