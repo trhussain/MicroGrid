@@ -19,6 +19,7 @@ Contains pinouts & all system configurations
 #include <Arduino_JSON.h>
 #include <FastLED.h>
 
+#include <movingAvg.h>
 #include "LittleFS.h"
 
 // pin definitions
@@ -62,6 +63,43 @@ JSONVar readings;
 String output26State = "off";
 const int output26 = 26;
 
+
+/*
+Analog ADC
+Solar Panel Voltage: 34
+Load Current: 35
+5V Current: 32
+
+Transistor Gates: 
+Solar Panel: 25
+5V Line: 33
+9V Line: 19 
+Loads: 21 22 23 
+*/
+
+
+const int adc_solarV = 34;
+const int adc_loadC = 35;
+const int adc_fiveCurrent = 32;
+
+const int sw_solar = 25;
+const int sw_five = 33;
+const int sw_nine = 19;
+
+const int sw_load1 = 21;
+const int sw_load2 = 22;
+const int sw_load3 = 23;
+
+const int zero_reading = 850;
+
+const int R1_acs = 47000;
+const int R2_acs= 75000;
+const int R1_volt = 10000;
+const int R2_volt = 5000;
+
+
+
+
 struct sensorData {
   float vBatt;
   float vSolar;
@@ -80,5 +118,4 @@ int dinoX = 0;
 int dinoSpeed = 5;  // pixels per frame
 unsigned long lastFrame = 0;
 
-#endif  // CONFIG_H
-
+#endif  //

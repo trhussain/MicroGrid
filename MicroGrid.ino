@@ -1,44 +1,51 @@
 #include "config.h"
-const int powerControl = 32; 
-const int load_1 = 23; 
-const int load_2 = 22; 
-const int power2 = 33; 
 
+
+
+bool powerCycleOn = false;
+unsigned long powerStartTime = 0;
+const unsigned long cycleInterval = 15000; // 10 seconds
+unsigned long lastToggleTime = 0;
 
 void setup() {
   Serial.begin(115200);
-  displaySetup();
-  wifiSetup();
-  delay(2000);
-  infoPage();
   sensorSetup();
-  pinMode(power2, OUTPUT);
-  pinMode(powerControl, OUTPUT);
-  pinMode(load_1, OUTPUT);
-  pinMode(load_2, OUTPUT);
+  digitalWrite(sw_solar, HIGH);
+  digitalWrite(sw_five, HIGH);
 
-
+  
 }
 
 
 void loop() {
-  if (WiFi.softAPgetStationNum() > 0) {
-    EVERY_N_MILLIS(5000) { 
-      dataPage();
-    }
-  } else {
-      digitalWrite(powerControl, HIGH);
-      digitalWrite(load_1, HIGH);
-      digitalWrite(load_2, HIGH);
-      digitalWrite(power2, HIGH);
-      infoPage();
-      sensorPrintOut();
-      delay(5000);
-      // digitalWrite(powerControl, LOW);
-      digitalWrite(load_1, LOW);
-      digitalWrite(load_2, LOW);
-      // digitalWrite(power2, LOW);
+  addToAverages();
+  sensorPrintOut();
+  sensor_process();
 
-      delay(1000);
+  unsigned long currentTime = millis();
+
+  if (currentTime - lastToggleTime >= cycleInterval) {
+    lastToggleTime = currentTime;
+    powerCycleOn = !powerCycleOn;  // toggle state
+
+    if (powerCycleOn) {
+      digitalWrite(sw_load1, HIGH);
+      digitalWrite(sw_load2, HIGH);
+      digitalWrite(sw_load3, HIGH);
+
+
+      Serial.println("Power ON");
+
+    } else {
+      digitalWrite(sw_load1, LOW);
+      digitalWrite(sw_load2, LOW);
+      digitalWrite(sw_load3, LOW);
+
+      // optionally:
+      // digitalWrite(powerControl, LOW);
+      // digitalWrite(power2, LOW);
+      Serial.println("Power OFF");
+    }
   }
+  delay(500);
 }
