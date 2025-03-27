@@ -42,16 +42,7 @@ void infoPage()  {
   // 7 spaces
   display.print("  --No Connections--");
   display.display();
-  // Draw dino at the bottom
-  display.drawBitmap(dinoX, 52, epd_bitmap_download, 8, 12, WHITE); // x, y, bitmap, width, height, color
-  display.display();
 
-  // Animate: Move dino
-  if (millis() - lastFrame > 10) {
-    dinoX += dinoSpeed;
-    if (dinoX > 120) dinoX = -8; // Loop around
-    lastFrame = millis();
-  }
 }
 
 

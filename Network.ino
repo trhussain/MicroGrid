@@ -8,10 +8,18 @@ String getSensorReadings() {
 
 // Initialize LittleFS
 void initLittleFS() {
-  if (!LittleFS.begin(true)) {
-    Serial.println("An error has occurred while mounting LittleFS");
+if (!LittleFS.begin(true)) {
+  Serial.println("Failed to mount LittleFS!");
+} else {
+  Serial.println("LittleFS mounted.");
+  File root = LittleFS.open("/");
+  File file = root.openNextFile();
+  while (file) {
+    Serial.print("Found file: ");
+    Serial.println(file.name());
+    file = root.openNextFile();
   }
-  Serial.println("LittleFS mounted successfully");
+}
 }
 
 // Notify all WebSocket clients with sensor readings
@@ -34,12 +42,11 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     Serial.println(message); // Print the clean message for debugging
 
     // Check if "toggle26" is part of the message
-    if (strstr(message, "sw_solar") != NULL) {
-      solarRailState = (solarRailState == "off") ? "on" : "off";
-      digitalWrite(sw_solar, (solarRailState == "on") ? HIGH : LOW);
-      Serial.println("Toggled GPIO 26");
+    if (strstr(message, "toggleNine") != NULL) {
+      nineVRailState = (nineVRailState == "off") ? "on" : "off";
+      digitalWrite(sw_nine, (nineVRailState == "on") ? HIGH : LOW);
       notifyClients(getGPIOStates());
-    } 
+    }
 
     // Handle other messages, like "getReadings"
     else if (strstr(message, "getReadings") != NULL) {
@@ -91,8 +98,13 @@ void wifiSetup() {
   initWiFi();
 
   // Serve HTML file from LittleFS
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(LittleFS, "/index.html", "text/html");
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    if (LittleFS.exists("/index.html")) {
+      request->send(LittleFS, "/index.html", "text/html");
+    } else {
+      Serial.println("Nothing found fool");
+      request->send(500, "text/plain", "File not found, contact Workshop leader");
+    }
   });
 
   // Serve static files (CSS, JS, etc.) from LittleFS
@@ -103,7 +115,7 @@ void wifiSetup() {
 
   // Configure the LED 
   pinMode(sw_solar, OUTPUT);
-  digitalWrite(sw_solar, LOW);
+  digitalWrite(sw_solar, HIGH);
 }
 
 
