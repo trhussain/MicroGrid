@@ -45,13 +45,13 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     if (strstr(message, "toggleNine") != NULL) {
       nineVRailState = (nineVRailState == "off") ? "on" : "off";
       digitalWrite(sw_nine, (nineVRailState == "on") ? HIGH : LOW);
-      notifyClients(getGPIOStates());
+      // notifyClients(getGPIOStates());
     }
 
-    // Handle other messages, like "getReadings"
-    else if (strstr(message, "getReadings") != NULL) {
-      notifyClients(getSensorReadings());
-    }
+    // // Handle other messages, like "getReadings"
+    // else if (strstr(message, "getReadings") != NULL) {
+    //   notifyClients(getSensorReadings());
+    // }
   }
 }
 

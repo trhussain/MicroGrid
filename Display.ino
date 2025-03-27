@@ -29,7 +29,7 @@ void displaySetup() {
 void infoPage()  {
   display.clearDisplay();
   display.setCursor(0, 0);
-  display.println("Hello! Save the");
+  display.println("Hello! Take a ph the");
   display.println("following info:");
 
   display.print("Wifi Name: ");
