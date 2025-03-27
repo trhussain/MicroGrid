@@ -1,4 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+
+
+    const socket = new WebSocket(`ws://${window.location.hostname}/ws`);
+
+    socket.onopen = () => {
+    console.log("WebSocket Connected!");
+    socket.send("getReadings");  // request initial data
+    };
+
+    socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+
+    // OPTIONAL: console.log(data);
+    setInterval(() => {
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send("getReadings");
+        }
+      }, 2000); // request every 2 seconds
+      
+    // 1. Update graph data (current)
+    chart1.data.datasets[0].data.push(data.solarcurrent || 0);
+    chart1.data.datasets[0].data = chart1.data.datasets[0].data.slice(-20);
+    chart1.update();
+
+    chart2.data.datasets[0].data.push(data.vbatt || 0); // example use for second graph
+    chart2.data.datasets[0].data = chart2.data.datasets[0].data.slice(-20);
+    chart2.update();
+
+    // 2. Inject solar voltage into textbox
+    if (data.solarbatt !== undefined) {
+        document.getElementById('textbox-2-left').innerHTML = `
+        <textarea>Solar Voltage: ${data.solarbatt}V</textarea>
+        `;
+    }
+    };
+
     document.getElementById('textbox-1').innerHTML = `<textarea placeholder="Enter notes here..."></textarea>`;
     document.getElementById('textbox-2-left').innerHTML = `<textarea placeholder="Left input..."></textarea>`;
     document.getElementById('textbox-2-right').innerHTML = `<textarea placeholder="Right input..."></textarea>`;
@@ -44,5 +81,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
+
+
+
+
+
+    window.sendToggle = function(command) {
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send(command);
+          console.log("Sent:", command);
+        } else {
+          console.log("WebSocket not ready");
+        }
+      };
+      
+
   });
   

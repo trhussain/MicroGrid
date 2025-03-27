@@ -60,8 +60,12 @@ JSONVar readings;
 
 
 // Auxiliar variables to store the current output state
-String output26State = "off";
-const int output26 = 26;
+String load1State = "off";
+String load2State = "off";
+String load3State = "off";
+String solarRailState = "off";
+String fiveVRailState = "off";
+String nineVRailState = "off";
 
 
 /*

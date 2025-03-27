@@ -2,9 +2,7 @@
 
 // Get Sensor Readings and return JSON object
 String getSensorReadings() {
-  readings["vbatt"] = String(mySensorData.vBatt);
-  readings["solarbatt"] = String(mySensorData.vSolar);
-  readings["solarcurrent"] = String(mySensorData.aSolar);
+
   return JSON.stringify(readings);
 }
 
@@ -21,7 +19,7 @@ void notifyClients(String sensorReadings) {
   ws.textAll(sensorReadings);
 }
 String getGPIOStates() {
-  readings["output26"] = output26State;
+  readings["solarRailState"] = solarRailState;
   return JSON.stringify(readings);
 }
 
@@ -36,9 +34,9 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     Serial.println(message); // Print the clean message for debugging
 
     // Check if "toggle26" is part of the message
-    if (strstr(message, "toggle26") != NULL) {
-      output26State = (output26State == "off") ? "on" : "off";
-      digitalWrite(output26, (output26State == "on") ? HIGH : LOW);
+    if (strstr(message, "sw_solar") != NULL) {
+      solarRailState = (solarRailState == "off") ? "on" : "off";
+      digitalWrite(sw_solar, (solarRailState == "on") ? HIGH : LOW);
       Serial.println("Toggled GPIO 26");
       notifyClients(getGPIOStates());
     } 
@@ -104,8 +102,8 @@ void wifiSetup() {
   server.begin();
 
   // Configure the LED 
-  pinMode(output26, OUTPUT);
-  digitalWrite(output26, LOW);
+  pinMode(sw_solar, OUTPUT);
+  digitalWrite(sw_solar, LOW);
 }
 
 

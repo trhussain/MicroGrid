@@ -32,6 +32,18 @@ void sensorSetup() {
   pinMode(sw_load2, OUTPUT);
   pinMode(sw_load3, OUTPUT);
 
+
+  digitalWrite(adc_loadC, LOW);
+  digitalWrite(adc_fiveCurrent, LOW);
+  digitalWrite(adc_solarV, LOW);
+
+  digitalWrite(sw_solar, LOW);
+  digitalWrite(sw_five, LOW);
+  digitalWrite(sw_nine, LOW);
+  digitalWrite(sw_load1, LOW);
+  digitalWrite(sw_load2, LOW);
+  digitalWrite(sw_load3, LOW);
+
   five_c_avg.begin();
   load_c_avg.begin();
   solar_v_avg.begin();
@@ -40,9 +52,9 @@ void sensorSetup() {
 
 // Read sensor -> default 2.5 -> 4096/2
 void addToAverages() { 
-  five_c_avg.reading(int(analogRead(adc_loadC)));
-  load_c_avg.reading(int(analogRead(adc_fiveCurrent)));
-  solar_v_avg.reading(int(analogRead(adc_solarV)));
+  five_c_avg.reading(int(max(five_c_avg.getAvg() - zero_reading, 0)));
+  load_c_avg.reading(int(max(load_c_avg.getAvg() - zero_reading, 0)));
+  solar_v_avg.reading(int(max(solar_v_avg.getAvg() - zero_reading, 0)));
 
 }
 void sensorPrintOut() { 
@@ -58,23 +70,23 @@ void sensor_process() {
   float adc_zeroed = adc_voltage * (3.3 / 4096.0);
   float current_voltage = (adc_zeroed * (R1_acs+R2_acs)/R2_acs);
   five_current = (current_voltage) / 0.100;
-  Serial.print("5V Current: ");
-  Serial.println(five_current);
+  // Serial.print("5V Current: ");
+  // Serial.println(five_current);
 
 
   float adc_voltage_loadC =  load_c_avg.getAvg() - zero_reading;
   float adc_zeroed_loadC = adc_voltage_loadC * (3.3 / 4096.0);
-  float current_voltage_loadC = (adc_zeroed * (R1_acs+R2_acs)/R2_acs);
+  float current_voltage_loadC = (adc_zeroed_loadC * (R1_acs+R2_acs)/R2_acs);
   load_current = (current_voltage_loadC) / 0.100;
-  Serial.print("Load Current: ");
-  Serial.println(load_current);
+  // Serial.print("Load Current: ");
+  // Serial.println(load_current);
 
   float adc_voltage_solarV =  solar_v_avg.getAvg() - zero_reading;
   float adc_zeroed_solarV = adc_voltage_solarV * (3.3 / 4096.0);
-  float current_voltage_solarV = (adc_zeroed * (R1_volt+R2_volt)/R2_volt);
+  float current_voltage_solarV = (adc_zeroed_solarV * (R1_volt+R2_volt)/R2_volt);
   solar_voltage = (current_voltage_solarV) / 0.100;
-  Serial.print("Solar Voltage: ");
-  Serial.println(solar_voltage);
+  // Serial.print("Solar Voltage: ");
+  // Serial.println(solar_voltage);
 
 }
 
