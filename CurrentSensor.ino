@@ -33,10 +33,6 @@ void sensorSetup() {
   pinMode(sw_load3, OUTPUT);
 
 
-  digitalWrite(adc_loadC, LOW);
-  digitalWrite(adc_fiveCurrent, LOW);
-  digitalWrite(adc_solarV, LOW);
-
   digitalWrite(sw_solar, LOW);
   digitalWrite(sw_five, LOW);
   digitalWrite(sw_nine, LOW);

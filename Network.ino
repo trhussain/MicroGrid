@@ -39,19 +39,41 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     memcpy(message, data, len);
     message[len] = '\0'; // Null-terminate the string
 
-    Serial.println(message); // Print the clean message for debugging
+    Serial.print(message); // Print the clean message for debugging
 
     // Check if "toggle26" is part of the message
-    if (strstr(message, "toggleNine") != NULL) {
+    if (strstr(message, "sw_load1") != NULL) {
+      load1State = (load1State == "off") ? "on" : "off";
+      digitalWrite(sw_load1, (load1State == "on") ? HIGH : LOW);
+      Serial.print(": ");
+      Serial.print(load1State);
+
+    }
+    else if (strstr(message, "sw_load2") != NULL) {
+      load2State = (load2State == "off") ? "on" : "off";
+      digitalWrite(sw_load2, (load2State == "on") ? HIGH : LOW);
+      Serial.print(": ");
+      Serial.print(load2State);
+    }
+    else if (strstr(message, "sw_load3") != NULL) {
+      load3State = (load3State == "off") ? "on" : "off";
+      digitalWrite(sw_load3, (load3State == "on") ? HIGH : LOW);
+      Serial.print(": ");
+      Serial.print(load3State);
+    }
+    else if (strstr(message, "toggleSolar") != NULL) {
+      solarRailState = (solarRailState == "off") ? "on" : "off";
+      digitalWrite(sw_solar, (solarRailState == "on") ? HIGH : LOW);
+    }
+    else if (strstr(message, "toggleFive") != NULL) {
+      fiveVRailState = (fiveVRailState == "off") ? "on" : "off";
+      digitalWrite(sw_five, (fiveVRailState == "on") ? HIGH : LOW);
+    }
+    else if (strstr(message, "toggleNine") != NULL) {
       nineVRailState = (nineVRailState == "off") ? "on" : "off";
       digitalWrite(sw_nine, (nineVRailState == "on") ? HIGH : LOW);
-      // notifyClients(getGPIOStates());
     }
-
-    // // Handle other messages, like "getReadings"
-    // else if (strstr(message, "getReadings") != NULL) {
-    //   notifyClients(getSensorReadings());
-    // }
+    Serial.println("");
   }
 }
 
@@ -94,7 +116,6 @@ void initWiFi() {
 void wifiSetup() { 
  // Initialize components
   initLittleFS();
-  initWebSocket();
   initWiFi();
 
   // Serve HTML file from LittleFS
@@ -109,6 +130,7 @@ void wifiSetup() {
 
   // Serve static files (CSS, JS, etc.) from LittleFS
   server.serveStatic("/", LittleFS, "/");
+  initWebSocket();
 
   // Start the server
   server.begin();

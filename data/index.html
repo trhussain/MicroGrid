@@ -56,11 +56,11 @@
 											<img src="images/9V_battery.png" alt="icon image" />
 										  </div>											<div class="content">
 											<h3>Main Grid (9V Battery)</h3> 
-											<p> The 9V battery represents the main utility grid in your microgrid model. It simulates standard grid power supplying your system under normal conditions. Toggle D19 to connect to the main grid, or simulate island mode by disconnecting it!
+											<p> The 9V battery represents the main utility grid in your microgrid model. It simulates standard grid power supplying your system under normal conditions. To simulate island mode physically disconnect its red wire!
 
 											</p>
 											<ul class="actions">
-												<a href="#power" class="button small" onclick="sendToggle('toggleNine')">Toggle D19</a>
+												<a href="#power" class="button small" onclick="sendToggle('toggleNine')">Be careful when unplugging!</a>
 											</ul>
 										</div>
 									</article>
@@ -70,9 +70,9 @@
 										  </div>
 											  <div class="content">
 											<h3>Generator (AA Battery Pack)</h3>
-											<p>The AA battery pack models a backup generator in your microgrid. Generators provide power when solar or grid sources are unavailable. Use this to simulate backup power activation during outages or peak load periods. Toggle D21 to activate the generator.</p>
+											<p>The AA battery pack models a backup generator in your microgrid. Generators provide power when solar or grid sources are unavailable. Both the main grid and backup generator are always supplying power to our critical loads.</p>
 											<ul class="actions">
-												<li><a href="#power" class="button small">Toggle D20</a></li>
+												<a href="#power" class="button small" onclick="sendToggle('toggleFive')">Toggle 5V Line (D33)</a>
 											</ul>
 										</div>
 									</article>
@@ -82,12 +82,12 @@
 										  </div>
 											  <div class="content">
 											<h3>Solar Panel</h3>
-											<p>The solar panel models a renewable energy source within your microgrid. It generates power during sunlight hours and reduces reliance on fossil fuels or the main grid. Toggle D21 to simulate solar generation and observe its effect on the system.
+											<p>The solar panel models a renewable energy source within your microgrid. It generates power during sunlight hours and reduces reliance on fossil fuels or the main grid. Toggle to simulate solar generation and observe its effect on the system.
 												Try shining a flashlight on this one when its on! 
 
 											</p>
 											<ul class="actions">
-												<li><a href="#power" class="button small">Toggle D21</a></li>
+												<a href="#power" class="button small" onclick="sendToggle('toggleSolar')">Toggle Solar Panel Line (D25)</a>
 											</ul>
 										</div>
 									</article>
@@ -97,7 +97,7 @@
 										  </div>
 											  <div class="content">
 											<h3>Indicator LEDs!</h3>
-											<p>An indicator LED will turn on when you toggle a line to tell you if its on or not! 
+											<p>An indicator LED will turn on when you toggle a line to tell you if its on or not! The blue LED is for the 5V line, yellow shows the current solar panel activity, and the red shows if the solar panel line is on or off
 
 											</p>
 		
@@ -116,10 +116,10 @@
 											<div class="icon-image">
 												<img src="images/red_led.jpg" alt="icon image" />
 											  </div>											<div class="content">
-												<h3>Power to a School</h3>
-												<p>ummmm</p>
+												<h3>Power to a neighborhood</h3>
+												<p>We need to enable rolling blackouts due to recent heat waves... time to cut power!</p>
 												<ul class="actions">
-													<li><a href="#power" class="button small">Toggle GPIO 19</a></li>
+													<li><a class="button small" onclick="sendToggle('sw_load1')">Toggle neighborhood power</a></li>
 												</ul>
 											</div>
 										</article>
@@ -128,33 +128,34 @@
 												<img src="images/red_led.jpg" alt="icon image" />
 											  </div>
 											  	<div class="content">
-												<h3>Power to a Hospital</h3>
-												<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+												<h3>Power to a HVAC</h3>
+												<p>Our HVAC systems in our commerical office can be shut off at night since there's no one here at night, time to save power!</p>
 												<ul class="actions">
-													<li><a href="#power" class="button small">Toggle GPIO 21</a></li>
+													<li><a href="#power" class="button small" onclick="sendToggle('sw_load2')">Toggle HVAC Power</a></li>
 												</ul>
 											</div>
 										</article>
 										<article>
 											<div class="icon-image">
-												<img src="images/red_led.jpg" alt="icon image" />
-											  </div>
-											  	<div class="content">
-												<h3>Power to your home</h3>
-												<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-												<ul class="actions">
-													<li><a href="#power" class="button small">Toggle GPIO 21</a></li>
-												</ul>
+											  <img src="images/red_led.jpg" alt="icon image" />
 											</div>
-										</article>
+											<div class="content">
+											  <h3>Power to EV Chargers</h3>
+											  <p>Our building's EV charging stations can be temporarily shut off to conserve energy during peak hours or blackouts.</p>
+											  <ul class="actions">
+												<li><a class="button small" onclick="sendToggle('sw_load3')">Toggle EV Charging</a></li>
+											  </ul>
+											</div>
+										  </article>
+										  
 										<article>
 											<div class="icon-image">
-												<img src="images/esp32.jpg" alt="icon image" />
+												<img src="images/scary.jpg" alt="icon image" />
 											  </div>											<div class="content">
 												<h3>Critical Load</h3>
-												<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+												<p>We can't disable our critical loads, they're critical! Don't click the button! Don't do it! </p>
 												<ul class="actions">
-													<li><a href="#power" class="button small">Can't toggle critical load!</a></li>
+													<li><a href="#power" class="button small" onclick="sendToggle('scary')">Toggle GPIO 23</a></li>
 												</ul>
 											</div>
 										</article>

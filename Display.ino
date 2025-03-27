@@ -29,8 +29,8 @@ void displaySetup() {
 void infoPage()  {
   display.clearDisplay();
   display.setCursor(0, 0);
-  display.println("Hello! Take a ph the");
-  display.println("following info:");
+  display.println("Hello! Take a pic of");
+  display.println("the following info:");
 
   display.print("Wifi Name: ");
   display.println(ssid);
