@@ -44,11 +44,29 @@ void infoPage()  {
   display.display();
 
 }
-
+void connectedNoBrowserPage() { 
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.println("User connected to network, open a Chrome/Safari browser and enter this IP address");
+  IPAddress IP = WiFi.softAPIP(); // Get the IP address of the AP
+  display.print("IP: ");
+  display.println(IP);
+}
 
 void dataPage()  {
   display.clearDisplay();
   display.setCursor(0, 0);
-  display.print("--Connected!--");
+  display.println("Connected!");
+  myDataSensors someSensorData = sensor_process();
+  display.print("Solar Voltage: ");
+  display.print(someSensorData.solarVoltage , 2);  // 2 decimal places
+  display.println(" V");
+
+  display.print("5V Line Current: ");
+  display.print(someSensorData.fiveCurrent, 2);
+  display.println(" A");
+
   display.display();
-}
+
+  }
+

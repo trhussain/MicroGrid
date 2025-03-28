@@ -82,9 +82,9 @@ Loads: 21 22 23
 */
 
 
-const int adc_solarV = 34;
-const int adc_loadC = 35;
-const int adc_fiveCurrent = 32;
+const int adc_solarV = 32;
+const int adc_loadC = 34;
+const int adc_fiveCurrent = 35;
 
 const int sw_solar = 25;
 const int sw_five = 33;
@@ -102,7 +102,11 @@ const int R1_volt = 10;
 const int R2_volt = 5.1;
 
 
-
+struct myDataSensors { 
+  float solarVoltage;
+  float fiveCurrent;
+  float loadCurrent;
+};
 
 
 

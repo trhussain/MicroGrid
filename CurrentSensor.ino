@@ -4,9 +4,7 @@ movingAvg five_c_avg(20);
 movingAvg load_c_avg(20); 
 movingAvg solar_v_avg(5);
 
-float five_current;
-float load_current;
-float solar_voltage; 
+
 
 // const int adc_solarV = 34;
 // const int adc_loadC = 35;
@@ -61,11 +59,12 @@ void sensorPrintOut() {
   //delay(500); 
 }
 
-void sensor_process() {
+myDataSensors sensor_process() {
+  myDataSensors mySensor;
   float adc_voltage =  five_c_avg.getAvg() - zero_reading;
   float adc_zeroed = adc_voltage * (3.3 / 4096.0);
   float current_voltage = (adc_zeroed * (R1_acs+R2_acs)/R2_acs);
-  five_current = (current_voltage) / 0.100;
+  mySensor.fiveCurrent = (current_voltage) / 0.100;
   // Serial.print("5V Current: ");
   // Serial.println(five_current);
 
@@ -73,14 +72,17 @@ void sensor_process() {
   float adc_voltage_loadC =  load_c_avg.getAvg() - zero_reading;
   float adc_zeroed_loadC = adc_voltage_loadC * (3.3 / 4096.0);
   float current_voltage_loadC = (adc_zeroed_loadC * (R1_acs+R2_acs)/R2_acs);
-  load_current = (current_voltage_loadC) / 0.100;
+  mySensor.loadCurrent = (current_voltage_loadC) / 0.100;
   // Serial.print("Load Current: ");
   // Serial.println(load_current);
 
-  float adc_voltage_solarV =  solar_v_avg.getAvg() - zero_reading;
+
+  float adc_voltage_solarV =  analogRead(adc_solarV);        
   float adc_zeroed_solarV = adc_voltage_solarV * (3.3 / 4096.0);
-  float current_voltage_solarV = (adc_zeroed_solarV * (R1_volt+R2_volt)/R2_volt);
-  solar_voltage = (current_voltage_solarV) / 0.100;
+  float originalVoltage_scale = (adc_zeroed_solarV * (R1_volt+R2_volt)/R2_volt);
+  mySensor.solarVoltage = (originalVoltage_scale) / 0.100;;
+
+  return mySensor;
   // Serial.print("Solar Voltage: ");
   // Serial.println(solar_voltage);
 

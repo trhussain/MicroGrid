@@ -121,6 +121,7 @@ void wifiSetup() {
   // Serve HTML file from LittleFS
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     if (LittleFS.exists("/index.html")) {
+      // dataPage();
       request->send(LittleFS, "/index.html", "text/html");
     } else {
       Serial.println("Nothing found fool");
