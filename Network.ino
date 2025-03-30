@@ -31,7 +31,7 @@ String getGPIOStates() {
   return JSON.stringify(readings);
 }
 
-void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
+void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *data, size_t len) { 
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
     // Create a properly null-terminated string from received data
@@ -45,21 +45,17 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     if (strstr(message, "sw_load1") != NULL) {
       load1State = (load1State == "off") ? "on" : "off";
       digitalWrite(sw_load1, (load1State == "on") ? HIGH : LOW);
-      Serial.print(": ");
-      Serial.print(load1State);
 
     }
     else if (strstr(message, "sw_load2") != NULL) {
       load2State = (load2State == "off") ? "on" : "off";
       digitalWrite(sw_load2, (load2State == "on") ? HIGH : LOW);
-      Serial.print(": ");
-      Serial.print(load2State);
+
     }
     else if (strstr(message, "sw_load3") != NULL) {
       load3State = (load3State == "off") ? "on" : "off";
       digitalWrite(sw_load3, (load3State == "on") ? HIGH : LOW);
-      Serial.print(": ");
-      Serial.print(load3State);
+
     }
     else if (strstr(message, "toggleSolar") != NULL) {
       solarRailState = (solarRailState == "off") ? "on" : "off";
@@ -73,7 +69,13 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       nineVRailState = (nineVRailState == "off") ? "on" : "off";
       digitalWrite(sw_nine, (nineVRailState == "on") ? HIGH : LOW);
     }
-    Serial.println("");
+    else if (strstr(message,"dataRequest") != NULL) { 
+      Serial.println("Data request received");
+      float voltage = readSolarVoltage();
+      String response = "{\"solarVoltage\":" + String(voltage, 2) + "}";
+      client->text(response);  // Send to all clients, or use `client->text(response);` if you pass the client pointer
+    }
+
   }
 }
 
@@ -89,7 +91,7 @@ void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType 
       Serial.printf("WebSocket client #%u disconnected\n", client->id());
       break;
     case WS_EVT_DATA:
-      handleWebSocketMessage(arg, data, len);
+      handleWebSocketMessage(client, arg, data, len);
       break;
     case WS_EVT_PONG:
     case WS_EVT_ERROR:

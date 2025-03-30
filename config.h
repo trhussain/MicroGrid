@@ -99,7 +99,7 @@ const int zero_reading = 850;
 const int R1_acs = 47000;
 const int R2_acs= 75000;
 const int R1_volt = 10;
-const int R2_volt = 5.1;
+const int R2_volt = 4.7;
 
 
 struct myDataSensors { 

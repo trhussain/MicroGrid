@@ -141,24 +141,24 @@
 											</div>
 											<div class="content">
 											  <h3>Power to EV Chargers</h3>
-											  <p>Our building's EV charging stations can be temporarily shut off to conserve energy during peak hours or blackouts.</p>
+											  <p>Our building's EV charging stations can be temporarily shut off to conserve energy blackouts or closing hours!</p>
 											  <ul class="actions">
 												<li><a class="button small" onclick="sendToggle('sw_load3')">Toggle EV Charging</a></li>
 											  </ul>
 											</div>
 										  </article>
+										  <article>
+											  <div class="icon-image">
+												  <img src="images/scary.jpg" alt="icon image" />
+												</div>											<div class="content">
+												  <h3>Critical Load</h3>
+												  <p>We can't disable our critical loads, they're critical! Don't click the button! Don't do it! </p>
+												  <ul class="actions">
+													  <li><a href="#power" class="button small" onclick="sendToggle('scary')">Toggle GPIO 23</a></li>
+												  </ul>
+											  </div>
+										  </article>
 										  
-										<article>
-											<div class="icon-image">
-												<img src="images/scary.jpg" alt="icon image" />
-											  </div>											<div class="content">
-												<h3>Critical Load</h3>
-												<p>We can't disable our critical loads, they're critical! Don't click the button! Don't do it! </p>
-												<ul class="actions">
-													<li><a href="#power" class="button small" onclick="sendToggle('scary')">Toggle GPIO 23</a></li>
-												</ul>
-											</div>
-										</article>
 									</div>
 								</section>
 
@@ -178,10 +178,9 @@
 										  </article>
 										  
 										  <article>
-											<h3>Solar Panel Current Draw</h3>
+											<h3>Solar Panel Voltage</h3>
 											<div class="split-container">
-											  <div id="textbox-2-left" class="dynamic-textbox split-box"></div>
-											  <div id="textbox-2-right" class="dynamic-textbox split-box"></div>
+											  <div id="solarVoltageDisplay" class="dynamic-textbox split-box"></div>
 											</div>
 										  </article>
 										  <article>

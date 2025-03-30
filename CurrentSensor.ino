@@ -87,4 +87,10 @@ myDataSensors sensor_process() {
   // Serial.println(solar_voltage);
 
 }
+float readSolarVoltage() {
+  float adc_voltage_solarV = analogRead(adc_solarV);        
+  float adc_zeroed_solarV = adc_voltage_solarV * (3.3 / 4096.0);
+  float current_voltage_solarV = (adc_zeroed_solarV * (R1_volt + R2_volt) / R2_volt) + 0.3; // offset
+  return max(current_voltage_solarV, 0);
+}
 
