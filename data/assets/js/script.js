@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("WebSocket Connected!");
     showBanner(true);
   };
-  const solarVoltageDenom = 3.80;
+  const solarVoltageDenom = 1;
   socket.onmessage = (event) => {
     console.log("Received:", event.data);
 
@@ -47,8 +47,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.solarVoltage !== undefined) {
           console.log("Solar Voltage:", data.solarVoltage);
           document.getElementById("solarVoltageDisplay").innerHTML = `<strong>${data.solarVoltage.toFixed(2)}</strong> V`;
-        
-          const powerAvailable = (data.fiveV === "on" || (data.solarRailState === "on" && data.solarVoltage > solarVoltageDenom)  && data.loadCurrent > 2); 
+          document.getElementById("fiveVin").innerHTML = `<strong>${data.fiveVoltage.toFixed(2)}</strong> V`;
+
+          const powerAvailable = ((data.fiveV === "on" || (data.solarRailState === "on" && data.solarVoltage > 3.5))  && data.loadCurrent > 1 && data.loadCurrent < 4); 
+          console.log("power available: ");
+          console.log(powerAvailable);
           const solarUsed = (data.solarRailState === "on") && (data.fiveV === "off" ||  data.solarVoltage > solarVoltageDenom);
           let solarAttenutation = 1;
           if (solarUsed) { 

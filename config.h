@@ -84,7 +84,7 @@ Loads: 21 22 23
 
 const int adc_solarV = 32;
 const int adc_loadC = 34;
-const int adc_fiveCurrent = 35;
+const int adc_fiveVoltage = 35;
 
 const int sw_solar = 25;
 const int sw_five = 33;

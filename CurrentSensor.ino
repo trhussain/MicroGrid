@@ -19,7 +19,7 @@ movingAvg solar_v_avg(5);
 // const int sw_load3 = 23;
 void sensorSetup() { 
   pinMode(adc_loadC, INPUT);
-  pinMode(adc_fiveCurrent, INPUT);
+  pinMode(adc_fiveVoltage, INPUT);
   pinMode(adc_solarV, INPUT);
 
   pinMode(sw_solar, OUTPUT);
@@ -53,7 +53,7 @@ void addToAverages() {
 }
 void sensorPrintOut() { 
   Serial.printf("Five V Line C-raw | avg: [%d] | [%d] \n", analogRead(adc_loadC), five_c_avg.getAvg());
-  Serial.printf("Load C-raw | avg: [%d] | [%d] \n", analogRead(adc_fiveCurrent), load_c_avg.getAvg());
+  Serial.printf("Load C-raw | avg: [%d] | [%d] \n", analogRead(adc_fiveVoltage), load_c_avg.getAvg());
   Serial.printf("Solar Panel V-raw | avg: [%d] | [%d] \n", analogRead(adc_solarV), solar_v_avg.getAvg());
 
   //delay(500); 
@@ -92,7 +92,13 @@ float readSolarVoltage() {
   }
   return max(current_voltage_solarV, 0.0f);
 }
-
+float readFiveVoltage() {
+  float adc_voltage_solarV = analogRead(adc_fiveVoltage);        
+  float adc_zeroed_solarV = adc_voltage_solarV * (3.3 / 4096.0);
+  float current_voltage_solarV = (adc_zeroed_solarV * (R1_volt + R2_volt) / R2_volt) - 0.75; // error offset 
+  
+  return max(current_voltage_solarV, 0.0f);
+}
 float readloadCurrent() { 
   float loadC_voltage =  analogRead(adc_loadC);        
   float something_something_loadC_voltage = loadC_voltage * (3.3 / 4096.0);

@@ -59,8 +59,14 @@ void dataPage()  {
   display.println("Connected!");
   // myDataSensors someSensorData = sensor_process();
   float solarVoltage = readSolarVoltage();
+  float fiveVoltage = readFiveVoltage();
+
   display.print("Solar V: ");
-  display.print(solarVoltage , 2);  // 2 decimal places
+  display.print(solarVoltage , 2);  
+  display.println("V");
+
+  display.print("5V Reg Input V: ");
+  display.print(fiveVoltage , 2);  
   display.println("V");
 
   display.print("Inst. Load C: ");

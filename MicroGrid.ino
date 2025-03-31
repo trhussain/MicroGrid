@@ -19,6 +19,8 @@ void loop() {
   }
 
   delay(1000);  
-
+  float fiveIn = readFiveVoltage();
+  Serial.printf("Five input: ");
+  Serial.println(fiveIn);
 
 }

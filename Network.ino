@@ -74,6 +74,7 @@ void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *da
       float voltage = readSolarVoltage();
       // myDataSensors tempData = sensor_process();
       float actualLoadCurrent = readloadCurrent();
+      float fiveVoltage = readFiveVoltage();
       String response = "{";
       response += "\"load1\":\"" + load1State + "\",";
       response += "\"load2\":\"" + load2State + "\",";
@@ -81,7 +82,10 @@ void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *da
       response += "\"fiveV\":\"" + fiveVRailState + "\",";
       response += "\"solarRailState\":\"" + solarRailState + "\",";
       response += "\"solarVoltage\":" + String(voltage, 2) + ",";
+      response += "\"fiveVoltage\":" + String(fiveVoltage, 2) + ",";
+
       response += "\"loadCurrent\":" + String(actualLoadCurrent, 2);
+  
       response += "}";
 
 

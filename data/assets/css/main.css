@@ -2193,7 +2193,7 @@ button,
     .icon-image img {
       /* transform: rotate(-45deg); */
       max-width: 80%;
-      max-height: 80%;
+      max-height: 50%;
       display: block;
     }
     .split-container {
@@ -2203,28 +2203,29 @@ button,
     
     .split-box {
       flex: 1;
-      min-height: 100px;
+      min-height: 50px;
       /* border: 1px solid #ccc; */
       padding: 0.5rem;
       background: #f8f8f8;
     }
     
     .dynamic-textbox {
-      background: linear-gradient(135deg, #5c6c8b, #2a5298);
-      color: #ffffff;
-      font-size: 2.2rem;
-      font-weight: bold;
-      padding: 1rem 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      min-width: 180px;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: #e8edf1!important;
+      color: #524d4d!important;
+      font-size: 2.2rem!important;
+      font-weight: bold!important;
+      padding: 1rem 2rem!important;
+      border-radius: 12px!important;
+      border: 2px solid rgba(255, 255, 255, 0.4)!important; /* <- subtle white border */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2)!important;
+      min-width: 180px!important;
+      text-align: center!important;
+      transition: transform 0.3s ease, box-shadow 0.3s ease!important;
     }
     
     .dynamic-textbox:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      transform: scale(1.05)!important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25)!important;
     }
     .banner {
       position: fixed !important;
@@ -2248,3 +2249,24 @@ button,
       color: white;
     }
     
+    .voltage-card {
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem 0.75rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.05);
+      background-color: #ffffff;
+      transition: box-shadow 0.3s ease;
+    }
+    
+    .voltage-card:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .voltage-card p {
+      margin: 0.5rem 0 0 0;
+    }
+    
+    .voltage-card .split-container {
+      margin-bottom: 0; /* or reduce to 0.25rem if needed */
+    }
