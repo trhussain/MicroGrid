@@ -12,7 +12,10 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 	</head>
 	<body class="is-preload">
-
+		<div id="wsStatusBanner" class="banner disconnected">
+			⚠️ Disconnected from MicroGrid Controller. Reconnecting...
+		  </div>
+		  
 		<!-- Wrapper -->
 			<div id="wrapper">
 
@@ -168,29 +171,23 @@
 										<h2>Power Data</h2>
 									</header>
 									<div class="posts">
-										<article>
-											<h3>5V Current Draw</h3>
-											<div class="split-container">
 
-												<div id="textbox-1" class="dynamic-textbox split-box"></div>
-											</div>
-
-										  </article>
 										  
 										  <article>
 											<h3>Solar Panel Voltage</h3>
 											<div class="split-container">
-											  <div id="solarVoltageDisplay" class="dynamic-textbox split-box"></div>
+												<div id="solarVoltageDisplay" class="dynamic-textbox "></div>
+
 											</div>
+											<p style="margin-bottom: 0.5rem;">Voltages &lt; 1V won't be accurate & only above ~3.5 will turn the LEDs on</p>
+
 										  </article>
-										  <article>
-											<h3>5V Line Current Graph</h3>
-											<canvas id="chart-1" width="400" height="200"></canvas>
-										  </article>
+
+		
 										  
 										  <article>
-											<h3>Solar Panel Current Graphs</h3>
-											<canvas id="chart-2" width="400" height="200"></canvas>
+											<h3>Load Current Graphs</h3>
+											<canvas id="loadCurrentChart" width="400" height="200"></canvas>
 										  </article>
 
 									</div>
@@ -199,13 +196,7 @@
 						</div>
 					</div>
 
-				<!-- Sidebar -->
-					<div id="sidebar">
 
-	
-
-						</div>
-					</div>
 
 			</div>
 

@@ -39,7 +39,7 @@ void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *da
     memcpy(message, data, len);
     message[len] = '\0'; // Null-terminate the string
 
-    Serial.print(message); // Print the clean message for debugging
+    // Serial.print(message); // Print the clean message for debugging
 
     // Check if "toggle26" is part of the message
     if (strstr(message, "sw_load1") != NULL) {
@@ -72,10 +72,26 @@ void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *da
     else if (strstr(message,"dataRequest") != NULL) { 
       Serial.println("Data request received");
       float voltage = readSolarVoltage();
-      String response = "{\"solarVoltage\":" + String(voltage, 2) + "}";
-      client->text(response);  // Send to all clients, or use `client->text(response);` if you pass the client pointer
-    }
+      // myDataSensors tempData = sensor_process();
+      float actualLoadCurrent = readloadCurrent();
+      String response = "{";
+      response += "\"load1\":\"" + load1State + "\",";
+      response += "\"load2\":\"" + load2State + "\",";
+      response += "\"load3\":\"" + load3State + "\",";
+      response += "\"fiveV\":\"" + fiveVRailState + "\",";
+      response += "\"solarRailState\":\"" + solarRailState + "\",";
+      response += "\"solarVoltage\":" + String(voltage, 2) + ",";
+      response += "\"loadCurrent\":" + String(actualLoadCurrent, 2);
+      response += "}";
 
+
+      client->text(response);  // `client->text(response);` for client pointer 
+    }
+    else if (strstr(message, "updateCurrent:") != NULL) {
+      float receivedCurrent = atof(strchr(message, ':') + 1);  // Get value after colon
+      Serial.printf("Updated Current from UI: %.2f mA\n", receivedCurrent);
+      myLoadCurrent = receivedCurrent;
+    }
   }
 }
 
@@ -124,6 +140,7 @@ void wifiSetup() {
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     if (LittleFS.exists("/index.html")) {
       // dataPage();
+      webpageOpened = true; // oled data showing
       request->send(LittleFS, "/index.html", "text/html");
     } else {
       Serial.println("Nothing found fool");

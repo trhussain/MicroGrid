@@ -96,18 +96,19 @@ const int sw_load3 = 23;
 
 const int zero_reading = 850;
 
-const int R1_acs = 47000;
-const int R2_acs= 75000;
+const int R1_acs = 33;
+const int R2_acs= 47;
 const int R1_volt = 10;
 const int R2_volt = 4.7;
 
+bool webpageOpened = false;
 
 struct myDataSensors { 
   float solarVoltage;
   float fiveCurrent;
   float loadCurrent;
 };
-
+float myLoadCurrent = 0.00;
 
 
 #endif  //

@@ -57,14 +57,15 @@ void dataPage()  {
   display.clearDisplay();
   display.setCursor(0, 0);
   display.println("Connected!");
-  myDataSensors someSensorData = sensor_process();
-  display.print("Solar Voltage: ");
-  display.print(someSensorData.solarVoltage , 2);  // 2 decimal places
-  display.println(" V");
+  // myDataSensors someSensorData = sensor_process();
+  float solarVoltage = readSolarVoltage();
+  display.print("Solar V: ");
+  display.print(solarVoltage , 2);  // 2 decimal places
+  display.println("V");
 
-  display.print("5V Line Current: ");
-  display.print(someSensorData.fiveCurrent, 2);
-  display.println(" A");
+  display.print("Inst. Load C: ");
+  display.print(myLoadCurrent, 2);
+  display.println("mA");
 
   display.display();
 

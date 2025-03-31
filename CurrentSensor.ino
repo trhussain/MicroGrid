@@ -73,14 +73,7 @@ myDataSensors sensor_process() {
   float adc_zeroed_loadC = adc_voltage_loadC * (3.3 / 4096.0);
   float current_voltage_loadC = (adc_zeroed_loadC * (R1_acs+R2_acs)/R2_acs);
   mySensor.loadCurrent = (current_voltage_loadC) / 0.100;
-  // Serial.print("Load Current: ");
-  // Serial.println(load_current);
 
-
-  float adc_voltage_solarV =  analogRead(adc_solarV);        
-  float adc_zeroed_solarV = adc_voltage_solarV * (3.3 / 4096.0);
-  float originalVoltage_scale = (adc_zeroed_solarV * (R1_volt+R2_volt)/R2_volt);
-  mySensor.solarVoltage = (originalVoltage_scale) / 0.100;;
 
   return mySensor;
   // Serial.print("Solar Voltage: ");
@@ -90,7 +83,19 @@ myDataSensors sensor_process() {
 float readSolarVoltage() {
   float adc_voltage_solarV = analogRead(adc_solarV);        
   float adc_zeroed_solarV = adc_voltage_solarV * (3.3 / 4096.0);
-  float current_voltage_solarV = (adc_zeroed_solarV * (R1_volt + R2_volt) / R2_volt) + 0.3; // offset
-  return max(current_voltage_solarV, 0);
+  float current_voltage_solarV = (adc_zeroed_solarV * (R1_volt + R2_volt) / R2_volt); 
+  if (current_voltage_solarV < 0.5) { 
+    current_voltage_solarV = current_voltage_solarV; // don't apply error when voltage reading is really small
+  }
+  else { 
+    current_voltage_solarV = current_voltage_solarV + 0.3; // error 
+  }
+  return max(current_voltage_solarV, 0.0f);
 }
 
+float readloadCurrent() { 
+  float loadC_voltage =  analogRead(adc_loadC);        
+  float something_something_loadC_voltage = loadC_voltage * (3.3 / 4096.0);
+  float somethingSomething = (something_something_loadC_voltage * (R1_acs+R2_acs)/R2_acs); // error reading offset
+  return somethingSomething;
+}
