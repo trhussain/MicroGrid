@@ -27,6 +27,7 @@ void displaySetup() {
 }
 
 void infoPage()  {
+
   display.clearDisplay();
   display.setCursor(0, 0);
   display.println("Hello! Take a pic of");

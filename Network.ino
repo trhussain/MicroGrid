@@ -8,18 +8,18 @@ String getSensorReadings() {
 
 // Initialize LittleFS
 void initLittleFS() {
-if (!LittleFS.begin(true)) {
-  Serial.println("Failed to mount LittleFS!");
-} else {
-  Serial.println("LittleFS mounted.");
-  File root = LittleFS.open("/");
-  File file = root.openNextFile();
-  while (file) {
-    Serial.print("Found file: ");
-    Serial.println(file.name());
-    file = root.openNextFile();
+  if (!LittleFS.begin(true)) {
+    Serial.println("Failed to mount LittleFS!");
+  } else {
+    Serial.println("LittleFS mounted.");
+    File root = LittleFS.open("/");
+    File file = root.openNextFile();
+    while (file) {
+      Serial.print("Found file: ");
+      Serial.println(file.name());
+      file = root.openNextFile();
+    }
   }
-}
 }
 
 // Notify all WebSocket clients with sensor readings
@@ -31,13 +31,13 @@ String getGPIOStates() {
   return JSON.stringify(readings);
 }
 
-void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *data, size_t len) { 
-  AwsFrameInfo *info = (AwsFrameInfo*)arg;
+void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *data, size_t len) {
+  AwsFrameInfo *info = (AwsFrameInfo *)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
     // Create a properly null-terminated string from received data
-    char message[len + 1]; // Add space for the null terminator
+    char message[len + 1];  // Add space for the null terminator
     memcpy(message, data, len);
-    message[len] = '\0'; // Null-terminate the string
+    message[len] = '\0';  // Null-terminate the string
 
     // Serial.print(message); // Print the clean message for debugging
 
@@ -46,30 +46,24 @@ void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *da
       load1State = (load1State == "off") ? "on" : "off";
       digitalWrite(sw_load1, (load1State == "on") ? HIGH : LOW);
 
-    }
-    else if (strstr(message, "sw_load2") != NULL) {
+    } else if (strstr(message, "sw_load2") != NULL) {
       load2State = (load2State == "off") ? "on" : "off";
       digitalWrite(sw_load2, (load2State == "on") ? HIGH : LOW);
 
-    }
-    else if (strstr(message, "sw_load3") != NULL) {
+    } else if (strstr(message, "sw_load3") != NULL) {
       load3State = (load3State == "off") ? "on" : "off";
       digitalWrite(sw_load3, (load3State == "on") ? HIGH : LOW);
 
-    }
-    else if (strstr(message, "toggleSolar") != NULL) {
+    } else if (strstr(message, "toggleSolar") != NULL) {
       solarRailState = (solarRailState == "off") ? "on" : "off";
       digitalWrite(sw_solar, (solarRailState == "on") ? HIGH : LOW);
-    }
-    else if (strstr(message, "toggleFive") != NULL) {
+    } else if (strstr(message, "toggleFive") != NULL) {
       fiveVRailState = (fiveVRailState == "off") ? "on" : "off";
       digitalWrite(sw_five, (fiveVRailState == "on") ? HIGH : LOW);
-    }
-    else if (strstr(message, "toggleNine") != NULL) {
+    } else if (strstr(message, "toggleNine") != NULL) {
       nineVRailState = (nineVRailState == "off") ? "on" : "off";
       digitalWrite(sw_nine, (nineVRailState == "on") ? HIGH : LOW);
-    }
-    else if (strstr(message,"dataRequest") != NULL) { 
+    } else if (strstr(message, "dataRequest") != NULL) {
       Serial.println("Data request received");
       float voltage = readSolarVoltage();
       // myDataSensors tempData = sensor_process();
@@ -85,13 +79,12 @@ void handleWebSocketMessage(AsyncWebSocketClient *client, void *arg, uint8_t *da
       response += "\"fiveVoltage\":" + String(fiveVoltage, 2) + ",";
 
       response += "\"loadCurrent\":" + String(actualLoadCurrent, 2);
-  
+
       response += "}";
 
 
-      client->text(response);  // `client->text(response);` for client pointer 
-    }
-    else if (strstr(message, "updateCurrent:") != NULL) {
+      client->text(response);  // `client->text(response);` for client pointer
+    } else if (strstr(message, "updateCurrent:") != NULL) {
       float receivedCurrent = atof(strchr(message, ':') + 1);  // Get value after colon
       Serial.printf("Updated Current from UI: %.2f mA\n", receivedCurrent);
       myLoadCurrent = receivedCurrent;
@@ -127,24 +120,28 @@ void initWebSocket() {
 
 // Initialize WiFi as a Soft Access Point
 void initWiFi() {
-  WiFi.softAP(ssid, password); // With password
-  IPAddress IP = WiFi.softAPIP(); // Get the IP address of the AP
+  WiFi.disconnect(true, true);  // erase old config
+  delay(500);
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(ssid, password);
+  // With password
+  IPAddress IP = WiFi.softAPIP();  // Get the IP address of the AP
   Serial.print("Access Point IP address: ");
   Serial.println(IP);
 }
 
 
 
-void wifiSetup() { 
- // Initialize components
+void wifiSetup() {
+  // Initialize components
   initLittleFS();
   initWiFi();
 
   // Serve HTML file from LittleFS
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     if (LittleFS.exists("/index.html")) {
       // dataPage();
-      webpageOpened = true; // oled data showing
+      webpageOpened = true;  // oled data showing
       request->send(LittleFS, "/index.html", "text/html");
     } else {
       Serial.println("Nothing found fool");
@@ -159,7 +156,7 @@ void wifiSetup() {
   // Start the server
   server.begin();
 
-  // Configure the LED 
+  // Configure the LED
   pinMode(sw_solar, OUTPUT);
   digitalWrite(sw_solar, HIGH);
 }
@@ -167,9 +164,8 @@ void wifiSetup() {
 
 
 
-void printIP(){ 
-  IPAddress IP = WiFi.softAPIP(); // Get the IP address of the AP
+void printIP() {
+  IPAddress IP = WiFi.softAPIP();  // Get the IP address of the AP
   Serial.print("Access Point IP address: ");
   Serial.println(IP);
-
 }

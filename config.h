@@ -17,7 +17,7 @@ Contains pinouts & all system configurations
 #include <ESPAsyncWebServer.h>    // Already in config.h — good
 #include <AsyncWebSocket.h>  
 #include <Arduino_JSON.h>
-#include <FastLED.h>
+// #include <FastLED.h>
 
 #include <movingAvg.h>
 #include "LittleFS.h"
@@ -41,8 +41,7 @@ Contains pinouts & all system configurations
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // Soft Access Point credentials
-const char* ssid = "net_1";
-const char* password = "my_pwd_1";
+
 // change 3rd argument (4 initially) for different device ID's 
 // IPAddress local_IP(192, 168, 4, 1);     // AP IP address
 // IPAddress gateway(192, 168, 4, 1);      // Usually same as AP IP
@@ -80,7 +79,8 @@ Solar Panel: 25
 9V Line: 19 
 Loads: 21 22 23 
 */
-
+const char* ssid = "board13";
+const char* password = "mypwd13";
 
 const int adc_solarV = 32;
 const int adc_loadC = 34;
