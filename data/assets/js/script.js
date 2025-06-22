@@ -46,6 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (data.solarVoltage !== undefined) {
           console.log("Solar Voltage:", data.solarVoltage);
+          if (data.solarVoltage < 1.5) { 
+            data.solarVoltage = 0.00;
+          }
           document.getElementById("solarVoltageDisplay").innerHTML = `<strong>${data.solarVoltage.toFixed(2)}</strong> V`;
           document.getElementById("fiveVin").innerHTML = `<strong>${data.fiveVoltage.toFixed(2)}</strong> V`;
 

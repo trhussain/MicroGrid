@@ -1,11 +1,28 @@
 /*
 CONFIG.H 
-
 Contains pinouts & all system configurations 
-
 */
 #ifndef CONFIG_H
 #define CONFIG_H
+
+/*
+ * Set your unique credentials below.
+ * Rules:
+ * - SSID must be less than 32 characters
+ * - Password must be between 8–63 characters
+ * - Use only letters, numbers, and underscores
+ * - Avoid spaces or special characters like `\`, `"`, `'`
+ 
+Good SSID & PWD Example 
+const char* ssid = "iloveucsd94";
+const char* password = "ilove_ece94";
+*/
+
+const char* ssid = "_change_me_";
+const char* password = "_change_me_to_";
+
+
+
 // libraries 
 #include "ACS712.h"
 #include <Wire.h>
@@ -23,11 +40,13 @@ Contains pinouts & all system configurations
 #include "LittleFS.h"
 
 // pin definitions
+#include <esp_wifi.h>
 
 
+// 18: SDA, 5: SCL !!! Swapped for Antoines PCB 
 // Define the SDA and SCL pins manually
-#define OLED_SDA 18
-#define OLED_SCL 5 // Update accordingly with your pinout 
+#define OLED_SDA 5 
+#define OLED_SCL 18 // Update accordingly with your pinout 
 
 
 // Other 
@@ -47,16 +66,18 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // IPAddress gateway(192, 168, 4, 1);      // Usually same as AP IP
 // IPAddress subnet(255, 255, 255, 0);     // Subnet mask
 
-// Create AsyncWebServer object on port 80
-AsyncWebServer server(80);
+// // Create AsyncWebServer object on port 80
+// AsyncWebServer server(80);
 
-// Create a WebSocket object
-AsyncWebSocket ws("/ws");
+// // Create a WebSocket object
+// AsyncWebSocket ws("/ws");
 
 // Json Variable to Hold Sensor Readings
 JSONVar readings;
 
-
+// change SSID 
+// Upload 
+// LittleFS
 
 // Auxiliar variables to store the current output state
 String load1State = "off";
@@ -79,8 +100,7 @@ Solar Panel: 25
 9V Line: 19 
 Loads: 21 22 23 
 */
-const char* ssid = "board13";
-const char* password = "mypwd13";
+
 
 const int adc_solarV = 32;
 const int adc_loadC = 34;

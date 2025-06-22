@@ -66,7 +66,7 @@ void dataPage()  {
   display.print(solarVoltage , 2);  
   display.println("V");
 
-  display.print("5V Reg Input V: ");
+  display.print("LM7805 Input: ");
   display.print(fiveVoltage , 2);  
   display.println("V");
 

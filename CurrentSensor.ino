@@ -6,17 +6,6 @@ movingAvg solar_v_avg(5);
 
 
 
-// const int adc_solarV = 34;
-// const int adc_loadC = 35;
-// const int adc_fiveCurrent = 32;
-
-// const int sw_solar = 25;
-// const int sw_five = 33;
-// const int sw_nine = 19;
-
-// const int sw_load1 = 21;
-// const int sw_load2 = 22;
-// const int sw_load3 = 23;
 void sensorSetup() { 
   pinMode(adc_loadC, INPUT);
   pinMode(adc_fiveVoltage, INPUT);
